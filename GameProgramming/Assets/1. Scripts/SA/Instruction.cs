@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public enum Flag
+public enum FLAG
 {
     Àû±â,
     Èæ±â,
@@ -30,7 +30,7 @@ public class Instruction : MonoBehaviour
 
     [SerializeField] string upCommand, downCommand;
 
-    [SerializeField] Flag upFlag, downFlag;
+    [SerializeField] FLAG upFlag, downFlag;
 
     [SerializeField] public float questionTime, currentTime;
 
@@ -80,8 +80,8 @@ public class Instruction : MonoBehaviour
         downCommand = down[Random.Range(0, down.Count)];
 
         // ±ê¹ß Á¤ÇÏ°í
-        upFlag = (Flag)Random.Range(0, (int)Flag.COUNT);
-        do downFlag = (Flag)Random.Range(0, (int)Flag.COUNT);
+        upFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
+        do downFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
         while (upFlag == downFlag);
 
         instructionTxt.text = upFlag + " " + upCommand + " " + downFlag + " " + downCommand;

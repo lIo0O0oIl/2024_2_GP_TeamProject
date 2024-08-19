@@ -7,11 +7,12 @@ public class Flag : MonoBehaviour
 {
     public string colorName;
     public Color color;
+    public float speed = 3f;
 
     [SerializeField] private Vector2 orginPos;
     [SerializeField] private Vector2 downPos;
 
-    private bool is_up = false;
+    public bool is_up = false;
     private GameObject cloth;
     private SpriteRenderer clothSpriteRenderer;
 
@@ -44,28 +45,30 @@ public class Flag : MonoBehaviour
         }
     }
 
-    private void Start()
+    public void Init(string colorName, Color color, float speed = 3f)
     {
+        this.colorName = colorName;
+        this.color = color;
+
+        OnValidate();
         if (color == null)
         {
             cloth = transform.GetChild(1).gameObject;
         }
-        orginPos = transform.position;
+        orginPos = cloth.transform.localPosition;
+
+        transform.DOMove(new Vector2(transform.position.x, transform.position.y - 7), 1).SetEase(Ease.OutBounce);
     }
 
     private void OnMouseDown()
     {
         Debug.Log($"{colorName}색 깃발 클릭");
         is_up = !is_up;
-        if (is_up )
-        {
-            DOTween.Kill(cloth);
-            cloth.transform.DOMove(downPos, 1f).SetEase(Ease.Linear);
-        }
-        else
-        {
-            DOTween.Kill(cloth);
-            cloth.transform.DOMove(orginPos, 1f).SetEase(Ease.Linear);
-        }
+
+        float distance = Vector3.Distance(cloth.transform.localPosition, is_up ? downPos : orginPos);
+        float duration = distance / speed;
+
+        DOTween.Kill(cloth);
+        cloth.transform.DOLocalMove(is_up ? downPos : orginPos, duration).SetEase(Ease.Linear);
     }
 }

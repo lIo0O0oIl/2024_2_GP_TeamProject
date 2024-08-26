@@ -25,21 +25,34 @@ public class FlagSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    if (nowFlagCount < maxFlagCount)
+        //    {
+        //        GameObject flagObj = Instantiate(flagPrefab, new Vector2(-7 + (nowFlagCount * 2), Camera.main.transform.position.y + 7), Quaternion.identity);
+        //        Invoke("ParticleStart", 0.4f);
+        //        Flag flag = flagObj.GetComponent<Flag>();
+        //        flag.Init(flagColorList[nowFlagCount].colorName, flagColorList[nowFlagCount].color);
+        //        nowFlagCount++;
+        //    }
+        //}
+    }
+
+    public void SpawnFlag()
+    {
+        if (nowFlagCount < maxFlagCount)
         {
-            if (nowFlagCount < maxFlagCount)
-            {
-                GameObject flagObj = Instantiate(flagPrefab, new Vector2(-7 + (nowFlagCount * 2), Camera.main.transform.position.y + 7), Quaternion.identity);
-                Invoke("ParticleStart", 0.4f);
-                Flag flag = flagObj.GetComponent<Flag>();
-                flag.Init(flagColorList[nowFlagCount].colorName, flagColorList[nowFlagCount].color);
-                nowFlagCount++;
-            }
+            GameObject flagObj = Instantiate(flagPrefab, new Vector2(-7 + (nowFlagCount * 2), Camera.main.transform.position.y + 7), Quaternion.identity);
+            Invoke("ParticleStart", 0.4f);
+            Flag flag = flagObj.GetComponent<Flag>();
+            flag.Init(flagColorList[nowFlagCount].colorName, flagColorList[nowFlagCount].color);
+            nowFlagCount++;
         }
     }
 
     private void ParticleStart()
     {
         Instantiate(dustParticle, new Vector2(-7 + (nowFlagCount * 2) - 3.4f, -1.5f), Quaternion.identity);
+        dustParticle.GetComponent<ParticleSystem>().startColor = flagColorList[nowFlagCount].color;
     }
 }

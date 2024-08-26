@@ -4,20 +4,20 @@ using UnityEngine;
 
 public enum FLAG
 {
-    Àû±â,
-    Èæ±â,
-    È²±â,
-    Ã»±â,
-    ¹é±â,
-    ³ì±â,
-    ÀÚ±â,
-    ÇÎ±â,
-    ÁÖ±â,
-    °¥±â,
-    ¾Æ±â,
-    ºñÇà±â,
-    ±â·¯±â,
-    ¸ğ±â,
+    ì ê¸°,
+    í‘ê¸°,
+    í™©ê¸°,
+    ì²­ê¸°,
+    ë°±ê¸°,
+    ë…¹ê¸°,
+    ìê¸°,
+    í•‘ê¸°,
+    ì£¼ê¸°,
+    ê°ˆê¸°,
+    ì•„ê¸°,
+    ë¹„í–‰ê¸°,
+    ê¸°ëŸ¬ê¸°,
+    ëª¨ê¸°,
     COUNT
 }
 
@@ -75,11 +75,11 @@ public class Instruction : MonoBehaviour
 
     public void EnterInstruction()
     {
-        // ¸í·É¾î Á¤ÇÏ°í
+        // ï¿½ï¿½É¾ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½
         upCommand = up[Random.Range(0, up.Count)];
         downCommand = down[Random.Range(0, down.Count)];
 
-        // ±ê¹ß Á¤ÇÏ°í
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï°ï¿½
         upFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
         do downFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
         while (upFlag == downFlag);

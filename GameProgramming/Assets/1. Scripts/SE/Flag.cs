@@ -68,7 +68,11 @@ public class Flag : MonoBehaviour
         float distance = Vector3.Distance(cloth.transform.localPosition, is_up ? downPos : orginPos);
         float duration = distance / speed;
 
+        Vector2 nowPos = cloth.transform.localPosition;
         DOTween.Kill(cloth);
+        cloth.transform.localPosition = nowPos;
         cloth.transform.DOLocalMove(is_up ? downPos : orginPos, duration).SetEase(Ease.Linear);
+
+        FlagStateManager.Instance.GiveFlagStateToCommand();
     }
 }

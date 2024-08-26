@@ -267,8 +267,6 @@ MonoBehaviour:
     color: {r: 0.9137255, g: 0.8784314, b: 0.13725491, a: 1}
   - colorName: Green
     color: {r: 0.29803923, g: 0.60784316, b: 0, a: 1}
-  - colorName: Blue
-    color: {r: 0.015686275, g: 0.15294118, b: 1, a: 1}
   - colorName: Purple
     color: {r: 0.6313726, g: 0, b: 0.87058824, a: 1}
   - colorName: Pink
@@ -277,8 +275,6 @@ MonoBehaviour:
     color: {r: 0.3254902, g: 0.13333334, b: 0, a: 1}
   - colorName: Black
     color: {r: 0, g: 0, b: 0, a: 1}
-  - colorName: White
-    color: {r: 1, g: 1, b: 1, a: 1}
   dustParticle: {fileID: 3761616568636873079, guid: ded5bacfe3791e54a94efc7b21a0f971, type: 3}
 --- !u!4 &1292170479
 Transform:

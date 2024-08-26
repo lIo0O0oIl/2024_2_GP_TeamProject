@@ -342,8 +342,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: bed63b54597699e4c8f1a54cbef4d7b0, type: 2}
+  m_sharedMaterial: {fileID: -8634280322399907085, guid: bed63b54597699e4c8f1a54cbef4d7b0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -417,6 +417,73 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 406544126}
   m_CullTransparentMesh: 1
+--- !u!1 &557880131
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 557880133}
+  - component: {fileID: 557880132}
+  m_Layer: 0
+  m_Name: FlagSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &557880132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557880131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cede898eba8a60a40a8867a0e93fb4b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flagPrefab: {fileID: 1330875293505624549, guid: 22f35e45ba599d444b64a969ef85c816, type: 3}
+  flagColorList:
+  - colorName: Blue
+    color: {r: 0.015686275, g: 0.15294118, b: 1, a: 1}
+  - colorName: White
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - colorName: Red
+    color: {r: 1, g: 0, b: 0.09411765, a: 1}
+  - colorName: Orange
+    color: {r: 1, g: 0.4509804, b: 0.07450981, a: 1}
+  - colorName: Yellow
+    color: {r: 0.9137255, g: 0.8784314, b: 0.13725491, a: 1}
+  - colorName: Green
+    color: {r: 0.29803923, g: 0.60784316, b: 0, a: 1}
+  - colorName: Purple
+    color: {r: 0.6313726, g: 0, b: 0.87058824, a: 1}
+  - colorName: Pink
+    color: {r: 0.9647059, g: 0.7058824, b: 0.88235295, a: 1}
+  - colorName: Brown
+    color: {r: 0.3254902, g: 0.13333334, b: 0, a: 1}
+  - colorName: Black
+    color: {r: 0, g: 0, b: 0, a: 1}
+  dustParticle: {fileID: 3761616568636873079, guid: ded5bacfe3791e54a94efc7b21a0f971, type: 3}
+--- !u!4 &557880133
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557880131}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &903858604
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,7 +495,7 @@ GameObject:
   - component: {fileID: 903858606}
   - component: {fileID: 903858605}
   m_Layer: 0
-  m_Name: Square
+  m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -560,8 +627,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 60
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: bed63b54597699e4c8f1a54cbef4d7b0, type: 2}
+  m_sharedMaterial: {fileID: -8634280322399907085, guid: bed63b54597699e4c8f1a54cbef4d7b0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -694,8 +761,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 60
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: bed63b54597699e4c8f1a54cbef4d7b0, type: 2}
+  m_sharedMaterial: {fileID: -8634280322399907085, guid: bed63b54597699e4c8f1a54cbef4d7b0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -886,7 +953,7 @@ GameObject:
   - component: {fileID: 2049485501}
   - component: {fileID: 2049485502}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: FlagEvent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -900,7 +967,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2049485498}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -935,6 +1002,8 @@ MonoBehaviour:
   currentTime: 0
   changeCnt: 3
   currentCnt: 0
+  currentFlagNum: 0
+  currentWave: 0
   isClear: 0
   instructionTxt: {fileID: 406544128}
   timeTxt: {fileID: 1268356000}
@@ -968,7 +1037,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   background: {fileID: 903858604}
-  speed: 3
+  speed: 10
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -977,4 +1046,5 @@ SceneRoots:
   - {fileID: 1629465892}
   - {fileID: 392289814}
   - {fileID: 2049485499}
+  - {fileID: 557880133}
   - {fileID: 903858606}

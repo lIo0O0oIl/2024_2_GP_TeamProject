@@ -34,6 +34,8 @@ public class FlagSpawner : MonoBehaviour
                 Flag flag = flagObj.GetComponent<Flag>();
                 flag.Init(flagColorList[nowFlagCount].colorName, flagColorList[nowFlagCount].color);
                 nowFlagCount++;
+
+                FlagStateManager.Instance.flags.Add(flag);
             }
         }
     }

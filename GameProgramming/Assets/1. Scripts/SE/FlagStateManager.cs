@@ -17,7 +17,6 @@ public class FlagStateManager : MonoBehaviour
 
     public void SetFlag(Flag flag)
     {
-        Debug.Log(flag.colorName + " Ãß°¡");
         flags.Add(flag);
     }
 
@@ -25,7 +24,7 @@ public class FlagStateManager : MonoBehaviour
     {
         foreach (Flag flag in flags)
         {
-            if (flag.name == name)
+            if (flag.colorName == name)
                 return flag;
         }
 
@@ -39,6 +38,6 @@ public class FlagStateManager : MonoBehaviour
         {
             flagState.Add(flag.is_up);
         }
-        //Instruction.Instance.CheckCommand(flagState);
+        Instruction.Instance.CheckCommand(flagState);
     }
 }

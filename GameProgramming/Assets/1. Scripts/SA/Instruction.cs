@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 
 public enum FLAG
 {
@@ -15,14 +15,6 @@ public enum FLAG
     Pink,
     Brown,
     Black,
-    ±â·¯±â,
-    µş±â,
-    ºñÇà±â,
-    ¸ğ±â,
-    ¹°°í±â,
-    ¹«±â,
-    ÀÚ±â,
-    ºñµÑ±â,
     COUNT
 }
 
@@ -74,25 +66,22 @@ public class Instruction : MonoBehaviour
 
     private void Start()
     {
-        flagSpawner.SpawnFlag();
-        flagSpawner.SpawnFlag();
+        currentTime = questionTime;
+        EnterInstruction();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-            isClear = true;
+/*        if (Input.GetKeyDown(KeyCode.Space))
+            isClear = true;*/
 
         currentTime -= Time.deltaTime;
         timeTxt.text = (Mathf.Floor(currentTime * 10f) / 10f).ToString();
-
 
         if (currentTime < 0)
         {
             RemoveInstruction();
             currentTime = questionTime;
-
-            //questionTime -= 0.1f;
 
             timeCurrentCnt++;
             if (timeCurrentCnt > timeChangeCnt && questionTime >= 1f)
@@ -103,45 +92,33 @@ public class Instruction : MonoBehaviour
         }
     }
 
-    public void EnterInstruction()
+    private void EnterInstruction()
     {
-        // ±ê¹ß Á¤ÇÏ°í
+        // ì²«ë²ˆì§¸ ê¹ƒë°œ
         do upFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
         while ((int)upFlag > currentFlagNum);
 
-
-        //upFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
+        // ë‘ë²ˆì§¸ ê¹ƒë°œ
         do downFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
         while (upFlag == downFlag || (int)downFlag > currentFlagNum);
 
-
-        // ¸í·É¾î Á¤ÇÏ°í
         int upIdx, downIdx;
 
+        // ì²«ë²ˆì§¸ ëª…ë ¹
         do upIdx = Random.Range(0, up.Count);
-        while (upIdx.ToString()
-            == (FlagStateManager.Instance.GetFlag(upFlag.ToString()).is_up).ToString());
+        while (upIdx.ToString() == FlagStateManager.Instance.GetFlag(upFlag.ToString()).is_up.ToString());
 
-        // ÇöÀç »óÅÂ¶û Áßº¹ ¸·°í
+        // ë‘ë²ˆì§¸ ëª…ë ¹
         do downIdx = Random.Range(0, down.Count);
         while ((upIdx == 2 && upIdx == downIdx) ||
             downIdx.ToString() == (FlagStateManager.Instance.GetFlag(downFlag.ToString()).is_up).ToString());
 
-        //upCommand = up[Random.Range(0, up.Count)];
-        //downCommand = down[Random.Range(0, down.Count)];
-
         upCommand = up[upIdx];
         downCommand = down[downIdx];
 
-        // »èÁ¦ ¿¹Á¤
-        //upCommand = up[Random.Range(0, up.Count)];
-        //do downCommand = down[Random.Range(0, down.Count)];
-        //while (upCommand == "°¡¸¸È÷ µÖ" && upCommand == downCommand); // °¡¸¸È÷ ¾È °ãÄ¡°Ô
-        //// if (upFlag.»óÅÂ == ¿Ã·Á ¶Ç´Â ³»·ÁÀÎ °æ¿ì ÇØ´ç »óÅÂ¸¦ Á¦¿ÜÇÑ n + °¡¸¸È÷)
-
         instructionTxt.text = upFlag + " " + upCommand + " " + downFlag + " " + downCommand;
 
-        if (currentWave % 2 == 0 && currentWave != 0)
+        if (currentWave % 2 == 0 && currentWave != 0)       // ë‘ í„´ë§ˆë‹¤ ê¹ƒë°œ ìƒì„±í•˜ê¸°
         {
             currentFlagNum++;
             flagSpawner.SpawnFlag();
@@ -149,9 +126,14 @@ public class Instruction : MonoBehaviour
         currentWave++;
     }
 
-    public void RemoveInstruction()
+    private void RemoveInstruction()
     {
         instructionTxt.text = "";
         EnterInstruction();
+    }
+
+    public void CheckCommand(List<bool> flagState)
+    {
+        // ê¹ƒë°œë“¤ í™•ì¸í•˜ê¸°!
     }
 }

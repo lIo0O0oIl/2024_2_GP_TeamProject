@@ -15,6 +15,12 @@ public class FlagStateManager : MonoBehaviour
         Instance = this;
     }
 
+    public void SetFlag(Flag flag)
+    {
+        Debug.Log(flag.colorName + " Ãß°¡");
+        flags.Add(flag);
+    }
+
     public Flag GetFlag(string name)
     {
         foreach (Flag flag in flags)

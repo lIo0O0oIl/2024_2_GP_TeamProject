@@ -5,16 +5,16 @@ using UnityEngine;
 
 public enum FLAG
 {
-    청기,
-    백기,
-    빨기,
-    주기,
-    황기,
-    녹기,
-    퍼플기,
-    홍기,
-    갈기,
-    흑기,
+    Blue,
+    White,
+    Red,
+    Orange,
+    Yellow,
+    Green,
+    Purple,
+    Pink,
+    Brown,
+    Black,
     기러기,
     딸기,
     비행기,
@@ -108,27 +108,30 @@ public class Instruction : MonoBehaviour
         // 깃발 정하고
         do upFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
         while ((int)upFlag > currentFlagNum);
-        upCommand = up[Random.Range(0, up.Count)];
-        downCommand = down[Random.Range(0, down.Count)];
 
-        upFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
+
+        //upFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
         do downFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
         while (upFlag == downFlag || (int)downFlag > currentFlagNum);
 
 
         // 명령어 정하고
         int upIdx, downIdx;
+
         do upIdx = Random.Range(0, up.Count);
         while (upIdx.ToString()
             == (FlagStateManager.Instance.GetFlag(upFlag.ToString()).is_up).ToString());
+
         // 현재 상태랑 중복 막고
         do downIdx = Random.Range(0, down.Count);
         while ((upIdx == 2 && upIdx == downIdx) ||
             downIdx.ToString() == (FlagStateManager.Instance.GetFlag(downFlag.ToString()).is_up).ToString());
-        // 가만히 중복 막고 현재 상태랑 중복 막고
 
-        //upCommand = up[upIdx];
-        //downCommand = down[downIdx];
+        //upCommand = up[Random.Range(0, up.Count)];
+        //downCommand = down[Random.Range(0, down.Count)];
+
+        upCommand = up[upIdx];
+        downCommand = down[downIdx];
 
         // 삭제 예정
         //upCommand = up[Random.Range(0, up.Count)];
@@ -140,8 +143,8 @@ public class Instruction : MonoBehaviour
 
         if (currentWave % 2 == 0 && currentWave != 0)
         {
-            flagSpawner.SpawnFlag();
             currentFlagNum++;
+            flagSpawner.SpawnFlag();
         }
         currentWave++;
     }

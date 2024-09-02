@@ -43,9 +43,11 @@ public class FlagSpawner : MonoBehaviour
         if (nowFlagCount < maxFlagCount)
         {
             GameObject flagObj = Instantiate(flagPrefab, new Vector2(-7 + (nowFlagCount * 2), Camera.main.transform.position.y + 7), Quaternion.identity);
+            flagObj.name = flagColorList[nowFlagCount].colorName;
             Invoke("ParticleStart", 0.4f);
             Flag flag = flagObj.GetComponent<Flag>();
             flag.Init(flagColorList[nowFlagCount].colorName, flagColorList[nowFlagCount].color);
+            FlagStateManager.Instance.SetFlag(flag);
             nowFlagCount++;
         }
     }

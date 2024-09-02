@@ -1,13 +1,17 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneChange : MonoBehaviour
+public class SceneManager : MonoBehaviour
 {
     [SerializeField]
     private string scencName;
     public void NextScene()
     {
-        SceneManager.LoadScene(scencName); 
+        UnityEngine.SceneManagement.SceneManager.LoadScene(scencName); 
     }
 
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }

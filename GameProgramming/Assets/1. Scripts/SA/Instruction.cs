@@ -108,18 +108,24 @@ public class Instruction : MonoBehaviour
         // 깃발 정하고
         do upFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
         while ((int)upFlag > currentFlagNum);
+        upCommand = up[Random.Range(0, up.Count)];
+        downCommand = down[Random.Range(0, down.Count)];
+
+        upFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
         do downFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
         while (upFlag == downFlag || (int)downFlag > currentFlagNum);
 
 
-        //// 명령어 정하고
-        //int upIdx, downIdx;
-        //do upIdx = Random.Range(0, up.Count);
-        //while (upIdx == upFlag.bool)
-        //// 현재 상태랑 중복 막고
-        //do downIdx = Random.Range(0, down.Count);
-        //while ((upIdx == 2 && upIdx == downIdx) || downIdx == downFlag.bool);
-        //// 가만히 중복 막고 현재 상태랑 중복 막고
+        // 명령어 정하고
+        int upIdx, downIdx;
+        do upIdx = Random.Range(0, up.Count);
+        while (upIdx.ToString()
+            == (FlagStateManager.Instance.GetFlag(upFlag.ToString()).is_up).ToString());
+        // 현재 상태랑 중복 막고
+        do downIdx = Random.Range(0, down.Count);
+        while ((upIdx == 2 && upIdx == downIdx) ||
+            downIdx.ToString() == (FlagStateManager.Instance.GetFlag(downFlag.ToString()).is_up).ToString());
+        // 가만히 중복 막고 현재 상태랑 중복 막고
 
         //upCommand = up[upIdx];
         //downCommand = down[downIdx];

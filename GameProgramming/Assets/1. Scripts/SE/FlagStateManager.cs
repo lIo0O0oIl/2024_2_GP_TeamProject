@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class FlagStateManager : MonoBehaviour
@@ -12,6 +13,17 @@ public class FlagStateManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+
+    public Flag GetFlag(string name)
+    {
+        foreach (Flag flag in flags)
+        {
+            if (flag.name == name)
+                return flag;
+        }
+
+        return null;
     }
 
     public void GiveFlagStateToCommand()

@@ -1,30 +1,21 @@
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum FLAG
 {
-    Blue,
-    White,
-    Red,
-    Orange,
-    Yellow,
-    Green,
-    Purple,
-    Pink,
-    Brown,
-    Black,
-    ±â·¯±â,
-    µş±â,
-    ºñÇà±â,
-    ¸ğ±â,
-    ¹°°í±â,
-    ¹«±â,
-    ÀÚ±â,
-    ºñµÑ±â,
+    Blue      = 0,
+    White    = 1,
+    Red       = 2,
+    Yellow   = 3,
+    Black     = 4,
+    Green   = 5,
+    Purple   = 6,
+    Pink      = 7,
+    Orange = 8,
+    Brown   = 9,
     COUNT
-}
+}                           // ë‚˜ì¤‘ì— ë”•ì…”ë„ˆë¦¬ ì“°ê±°ë‚˜ ë°°ì—´ì‚¬ìš©í•´ì„œ ìƒ‰ê¹”ë“¤ í‘œì‹œí•˜ê²Œ í•´ì£¼ê¸°.
 
 public class Instruction : MonoBehaviour
 {
@@ -32,17 +23,15 @@ public class Instruction : MonoBehaviour
 
     [Header("Instruction List")]
     [SerializeField]
-    List<string> up = new List<string>();
+    string[] firstCommandList = new string[3];
     [SerializeField]
-    List<string> down = new List<string>();
+    string[] secondCommandList = new string[3];
 
-    [Header("CommandAndFlag")]
-    [SerializeField] string upCommand;
-    [SerializeField] string downCommand;
-    [SerializeField] FLAG upFlag;
-    [SerializeField] FLAG downFlag;
+    // CommandAndFlag
+    [SerializeField] private List<int> movedFlagIndex = new List<int>();
+    [SerializeField] private List<bool> movedFlagState = new List<bool>();
 
-    [Header("Timer")]
+    [Header("CommandTimer")]
     public float questionTime;
     public float currentTime;
     [SerializeField] int timeChangeCnt;
@@ -51,14 +40,16 @@ public class Instruction : MonoBehaviour
     [Header("FlagAndWave")]
     [SerializeField] int currentFlagNum;
     [SerializeField] int currentWave;
-    [SerializeField] bool isClear;
+    //[SerializeField] bool isClear;
 
     [Header("UI")]
     [SerializeField] TextMeshProUGUI instructionTxt;
     [SerializeField] TextMeshProUGUI timeTxt;
 
-    Timer timer;
-    FlagSpawner flagSpawner;
+    private Timer timer;
+    private FlagSpawner flagSpawner;
+
+    private int whileBreaker = 0;
 
     private void Awake()
     {
@@ -74,74 +65,115 @@ public class Instruction : MonoBehaviour
 
     private void Start()
     {
-        flagSpawner.SpawnFlag();
-        flagSpawner.SpawnFlag();
+        currentTime = questionTime;
+        EnterInstruction();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-            isClear = true;
-
         currentTime -= Time.deltaTime;
         timeTxt.text = (Mathf.Floor(currentTime * 10f) / 10f).ToString();
-
 
         if (currentTime < 0)
         {
             RemoveInstruction();
-            currentTime = questionTime;
+        }
 
-            //questionTime -= 0.1f;
-
-            timeCurrentCnt++;
-            if (timeCurrentCnt > timeChangeCnt && questionTime >= 1f)
-                questionTime -= 0.1f;
-
-            timer.SetTimer(isClear);
-            isClear = false;
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Time.timeScale = Time.timeScale == 1 ? 0 : 1;
         }
     }
 
-    public void EnterInstruction()
+    private void EnterInstruction()
     {
-        // ±ê¹ß Á¤ÇÏ°í
-        do upFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
-        while ((int)upFlag > currentFlagNum);
+        #region ê¹ƒë°œ ì„ íƒ
+        FLAG firstFlagIndex, secondFlagIndex;
+        // ì²«ë²ˆì§¸ ê¹ƒë°œ
+        do firstFlagIndex = (FLAG)Random.Range(0, (int)FLAG.COUNT);
+        while ((int)firstFlagIndex > currentFlagNum);
 
+        // ë‘ë²ˆì§¸ ê¹ƒë°œ (ì²«ë²ˆì§¸ ê²ƒê³¼ ë™ì¼í•˜ì§€ ì•Šì•„ì•¼ í•¨.)
+        do secondFlagIndex = (FLAG)Random.Range(0, (int)FLAG.COUNT);
+        while (firstFlagIndex == secondFlagIndex || (int)secondFlagIndex > currentFlagNum);
 
-        //upFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
-        do downFlag = (FLAG)Random.Range(0, (int)FLAG.COUNT);
-        while (upFlag == downFlag || (int)downFlag > currentFlagNum);
+        movedFlagIndex.Add((int)firstFlagIndex);
+        movedFlagIndex.Add((int)secondFlagIndex);
+        #endregion
 
+        #region ëª…ë ¹ ì„ íƒ
+        int firstCommandIndex, secondCommandIndex;
+        List<bool> flagState = FlagStateManager.Instance.GetFlagState();
+        
+        // ì²«ë²ˆì§¸ ëª…ë ¹ (0, 1 ì¼ ë•Œ í˜„ì¬ì™€ ë‹¬ë¼ì•¼ í•¨.)
+        while (true)
+        {
+            firstCommandIndex = Random.Range(0, firstCommandList.Length);
+            if (firstCommandIndex != 2)
+            {
+                if (System.Convert.ToBoolean(firstCommandIndex) != FlagStateManager.Instance.GetFlag((int)firstFlagIndex).is_up) break;
+            }
+            else break;
 
-        // ¸í·É¾î Á¤ÇÏ°í
-        int upIdx, downIdx;
+            whileBreaker++;
+            if (whileBreaker > 1000)
+            {
+                whileBreaker = 0;
+                Debug.Log("ì™€ì¼ë¬¸ ì˜ëª»ë§Œë“¦");
+                break;
+            }
+        }
 
-        do upIdx = Random.Range(0, up.Count);
-        while (upIdx.ToString()
-            == (FlagStateManager.Instance.GetFlag(upFlag.ToString()).is_up).ToString());
+        // ë‘ë²ˆì§¸ ëª…ë ¹ (í˜„ì¬êº¼ë‘ ë‹¤ë¥´ê³  ìœ„ì—êº¼ë‘ ê°€ë§Œíˆ ë‘ê³ ê°€ ê²¹ì¹˜ë©´ ì•ˆë¨.)
+        while (true)
+        {
+            secondCommandIndex = Random.Range(0, secondCommandList.Length);
+            if (secondCommandIndex != 2)
+            {
+                if (System.Convert.ToBoolean(secondCommandIndex) != FlagStateManager.Instance.GetFlag((int)secondFlagIndex).is_up) break;
+            }
+            else if (secondCommandIndex == 2)
+            {
+                if (firstCommandIndex != 2) break;
+            }
 
-        // ÇöÀç »óÅÂ¶û Áßº¹ ¸·°í
-        do downIdx = Random.Range(0, down.Count);
-        while ((upIdx == 2 && upIdx == downIdx) ||
-            downIdx.ToString() == (FlagStateManager.Instance.GetFlag(downFlag.ToString()).is_up).ToString());
+            whileBreaker++;
+            if (whileBreaker > 1000)
+            {
+                whileBreaker = 0;
+                Debug.Log("ì™€ì¼ë¬¸ ì˜ëª»ë§Œë“¦");
+                break;
+            }
+        }
 
-        //upCommand = up[Random.Range(0, up.Count)];
-        //downCommand = down[Random.Range(0, down.Count)];
+        // ëª…ë ¹ì–´ ë“¤ì–´ì˜¤ëŠ”ê²Œ ì´ìƒí•¨. ê³ ì¹˜ê¸°!
+        if (firstCommandIndex == 2 || secondCommandIndex == 2)
+        {
+            if (firstCommandIndex == 2)
+            {
+                movedFlagState.Add(FlagStateManager.Instance.GetFlag((int)firstFlagIndex).is_up);
+                movedFlagState.Add(System.Convert.ToBoolean(secondCommandIndex));
+            }
+            else if (secondCommandIndex == 2)
+            {
+                movedFlagState.Add(System.Convert.ToBoolean(firstCommandIndex));
+                movedFlagState.Add(FlagStateManager.Instance.GetFlag((int)secondFlagIndex).is_up);
+            }
+        }
+        else
+        {
+            movedFlagState.Add(System.Convert.ToBoolean(firstCommandIndex));
+            movedFlagState.Add(System.Convert.ToBoolean(secondCommandIndex));
+        }
+        #endregion
+        
+        //flagSpawner.flagInfoList[0].color.GetHashCode();
+        // <color=#(ì½”ë“œ)>í…ìŠ¤íŠ¸</color> í•˜ë©´ ìƒ‰ìƒ ë³€ê²½ì´ ê°€ëŠ¥í•¨.
+        instructionTxt.text = $"<color={ColorToHex(flagSpawner.flagInfoList[(int)firstFlagIndex].color)}>{firstFlagIndex}</color> {firstCommandList[firstCommandIndex]} " +
+            $"<color={ColorToHex(flagSpawner.flagInfoList[(int)secondFlagIndex].color)}>{secondFlagIndex}</color> {secondCommandList[secondCommandIndex]}";
+        // ìƒ‰ìƒ ë„£ì–´ì£¼ê³  ìƒ‰ìƒì— ë§ëŠ” ì´ë¦„ë„ ë„£ì–´ì£¼ê¸° ìŠ¤í¬ë„ˆì— ì •ë³´ê°€ ë‹¤ ìˆìŒ.
 
-        upCommand = up[upIdx];
-        downCommand = down[downIdx];
-
-        // »èÁ¦ ¿¹Á¤
-        //upCommand = up[Random.Range(0, up.Count)];
-        //do downCommand = down[Random.Range(0, down.Count)];
-        //while (upCommand == "°¡¸¸È÷ µÖ" && upCommand == downCommand); // °¡¸¸È÷ ¾È °ãÄ¡°Ô
-        //// if (upFlag.»óÅÂ == ¿Ã·Á ¶Ç´Â ³»·ÁÀÎ °æ¿ì ÇØ´ç »óÅÂ¸¦ Á¦¿ÜÇÑ n + °¡¸¸È÷)
-
-        instructionTxt.text = upFlag + " " + upCommand + " " + downFlag + " " + downCommand;
-
-        if (currentWave % 2 == 0 && currentWave != 0)
+        if (currentWave % 2 == 0 && currentWave != 0)       // ë‘ í„´ë§ˆë‹¤ ê¹ƒë°œ ìƒì„±í•˜ê¸°
         {
             currentFlagNum++;
             flagSpawner.SpawnFlag();
@@ -149,9 +181,48 @@ public class Instruction : MonoBehaviour
         currentWave++;
     }
 
-    public void RemoveInstruction()
+    private void RemoveInstruction()
     {
         instructionTxt.text = "";
+
+        movedFlagIndex.Clear();
+        movedFlagState.Clear();
+
+        currentTime = questionTime;
+        Debug.Log(currentTime);
+
+        timeCurrentCnt++;
+        if (timeCurrentCnt > timeChangeCnt && questionTime >= 1f)
+            questionTime -= 0.1f;
+
         EnterInstruction();
+    }
+
+    public void CheckCommand(List<bool> flagState)
+    {
+        // Moved Flag State ëŠ” ë”°ë¡œ ê³„ì‚°í•˜ê¸°
+        int stateCnt = 0;
+        foreach (var index in movedFlagIndex)
+        {
+            Debug.Log(flagState[index] + " " + movedFlagState[stateCnt]);
+            if (flagState[index] != movedFlagState[stateCnt])
+            {
+                return;
+            }
+            stateCnt++;
+        }
+        timer.AddTime();
+        RemoveInstruction();
+    }
+
+    string ColorToHex(Color color)
+    {
+        // RGB ê°’ì„ 0~255 ë²”ìœ„ë¡œ ë³€í™˜
+        int r = Mathf.RoundToInt(color.r * 255);
+        int g = Mathf.RoundToInt(color.g * 255);
+        int b = Mathf.RoundToInt(color.b * 255);
+
+        // í—¥ì‚¬ ì½”ë“œë¡œ ë³€í™˜ (RRGGBB ë˜ëŠ” RRGGBBAA í˜•ì‹)
+        return string.Format("#{0:X2}{1:X2}{2:X2}", r, g, b);
     }
 }

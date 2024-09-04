@@ -1,60 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
-public struct FlagColor
+public struct FlagInfo
 {
-    public string colorName;
+    public string colorNameEN;
+    public string colorNameKR;
     public Color color;
+    public Vector2 position;
+}
+
+[System.Serializable]
+public struct FakeFlagInfo          // 나중에 다른 애들 있으면 사용하기
+{
+    public GameObject prefabs;
+    public Vector2 position;
 }
 
 public class FlagSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject flagPrefab;
-    [SerializeField] private FlagColor[] flagColorList;
+    [SerializeField] public FlagInfo[] flagInfoList;
     [SerializeField] private GameObject dustParticle;
     
-    private int nowFlagCount = 0;
+    private int nowFlagCount = 2;
     private int maxFlagCount;
 
     private void Start()
     {
-        maxFlagCount = flagColorList.Length;
-    }
-
-    private void Update()
-    {
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    if (nowFlagCount < maxFlagCount)
-        //    {
-        //        GameObject flagObj = Instantiate(flagPrefab, new Vector2(-7 + (nowFlagCount * 2), Camera.main.transform.position.y + 7), Quaternion.identity);
-        //        Invoke("ParticleStart", 0.4f);
-        //        Flag flag = flagObj.GetComponent<Flag>();
-        //        flag.Init(flagColorList[nowFlagCount].colorName, flagColorList[nowFlagCount].color);
-        //        nowFlagCount++;
-        //    }
-        //}
+        maxFlagCount = flagInfoList.Length;
     }
 
     public void SpawnFlag()
     {
-        if (nowFlagCount < maxFlagCount)
+        if (nowFlagCount < maxFlagCount)            // 생성 코드 다 바꾸기
         {
-            GameObject flagObj = Instantiate(flagPrefab, new Vector2(-7 + (nowFlagCount * 2), Camera.main.transform.position.y + 7), Quaternion.identity);
-            flagObj.name = flagColorList[nowFlagCount].colorName;
+            GameObject flagObj = Instantiate(flagPrefab, new Vector2(flagInfoList[nowFlagCount].position.x, Camera.main.transform.position.y + 7), Quaternion.identity, transform);
+            flagObj.name = $"{flagInfoList[nowFlagCount].colorNameEN}Flag";
             Invoke("ParticleStart", 0.4f);
+
             Flag flag = flagObj.GetComponent<Flag>();
-            flag.Init(flagColorList[nowFlagCount].colorName, flagColorList[nowFlagCount].color);
+            flag.Init(flagInfoList[nowFlagCount].colorNameEN, flagInfoList[nowFlagCount].color, flagInfoList[nowFlagCount].position.y);
             FlagStateManager.Instance.SetFlag(flag);
+
             nowFlagCount++;
+
+            if (nowFlagCount == 5)
+            {
+                FlagStateManager.Instance.FourFlagMovement();
+            }
         }
     }
 
     private void ParticleStart()
     {
-        Instantiate(dustParticle, new Vector2(-7 + (nowFlagCount * 2) - 3.4f, -1.5f), Quaternion.identity);
-        dustParticle.GetComponent<ParticleSystem>().startColor = flagColorList[nowFlagCount].color;
+        Instantiate(dustParticle, new Vector2(flagInfoList[nowFlagCount -1].position.x - 1.45f, flagInfoList[nowFlagCount].position.y - 1.55f), Quaternion.identity, transform);
+        var main = dustParticle.GetComponent<ParticleSystem>().main;
+        main.startColor = flagInfoList[nowFlagCount - 1].color;
     }
 }

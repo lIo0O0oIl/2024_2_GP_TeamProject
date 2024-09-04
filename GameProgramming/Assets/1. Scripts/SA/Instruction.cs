@@ -167,11 +167,8 @@ public class Instruction : MonoBehaviour
         }
         #endregion
         
-        //flagSpawner.flagInfoList[0].color.GetHashCode();
-        // <color=#(코드)>텍스트</color> 하면 색상 변경이 가능함.
         instructionTxt.text = $"<color={ColorToHex(flagSpawner.flagInfoList[(int)firstFlagIndex].color)}>{firstFlagIndex}</color> {firstCommandList[firstCommandIndex]} " +
             $"<color={ColorToHex(flagSpawner.flagInfoList[(int)secondFlagIndex].color)}>{secondFlagIndex}</color> {secondCommandList[secondCommandIndex]}";
-        // 색상 넣어주고 색상에 맞는 이름도 넣어주기 스포너에 정보가 다 있음.
 
         if (currentWave % 2 == 0 && currentWave != 0)       // 두 턴마다 깃발 생성하기
         {
@@ -189,7 +186,6 @@ public class Instruction : MonoBehaviour
         movedFlagState.Clear();
 
         currentTime = questionTime;
-        Debug.Log(currentTime);
 
         timeCurrentCnt++;
         if (timeCurrentCnt > timeChangeCnt && questionTime >= 1f)
@@ -204,7 +200,7 @@ public class Instruction : MonoBehaviour
         int stateCnt = 0;
         foreach (var index in movedFlagIndex)
         {
-            Debug.Log(flagState[index] + " " + movedFlagState[stateCnt]);
+            //Debug.Log(flagState[index] + " " + movedFlagState[stateCnt]);
             if (flagState[index] != movedFlagState[stateCnt])
             {
                 return;
@@ -222,7 +218,7 @@ public class Instruction : MonoBehaviour
         int g = Mathf.RoundToInt(color.g * 255);
         int b = Mathf.RoundToInt(color.b * 255);
 
-        // 헥사 코드로 변환 (RRGGBB 또는 RRGGBBAA 형식)
+        // 헥사 코드로 변환 (RRGGBB 형식)
         return string.Format("#{0:X2}{1:X2}{2:X2}", r, g, b);
     }
 }

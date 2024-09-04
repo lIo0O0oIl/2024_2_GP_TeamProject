@@ -5,12 +5,18 @@ using UnityEngine.UI;
 public class VolumeManager : MonoBehaviour
 {
     [SerializeField] private AudioMixer mixer;
-    [SerializeField] private Slider bgmSlider, sfxSlider;
+    [SerializeField] private Slider masterSlider, bgmSlider, sfxSlider;
 
     private void Start()
     {
+        masterSlider.onValueChanged.AddListener(delegate { Master(); });
         bgmSlider.onValueChanged.AddListener(delegate { BGM(); });
         sfxSlider.onValueChanged.AddListener(delegate { SFX(); });
+    }
+
+    public void Master()
+    {
+        mixer.SetFloat("Master", masterSlider.value);
     }
 
     public void BGM()

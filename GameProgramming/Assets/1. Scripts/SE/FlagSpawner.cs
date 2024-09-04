@@ -39,7 +39,10 @@ public class FlagSpawner : MonoBehaviour
         {
             GameObject flagObj = Instantiate(flagPrefab, new Vector2(flagInfoList[nowFlagCount].position.x, Camera.main.transform.position.y + 7), Quaternion.identity, transform);
             flagObj.name = $"{flagInfoList[nowFlagCount].colorNameEN}Flag";
-            Invoke("ParticleStart", 0.4f);
+
+            GameObject particle =  Instantiate(dustParticle, new Vector2(flagInfoList[nowFlagCount].position.x - 1.45f, flagInfoList[nowFlagCount].position.y - 1.55f), Quaternion.identity, transform);
+            var main = particle.GetComponent<ParticleSystem>().main;
+            main.startColor = flagInfoList[nowFlagCount].color;
 
             Flag flag = flagObj.GetComponent<Flag>();
             flag.Init(flagInfoList[nowFlagCount].colorNameEN, flagInfoList[nowFlagCount].color, flagInfoList[nowFlagCount].position.y);
@@ -52,12 +55,5 @@ public class FlagSpawner : MonoBehaviour
                 FlagStateManager.Instance.FourFlagMovement();
             }
         }
-    }
-
-    private void ParticleStart()
-    {
-        Instantiate(dustParticle, new Vector2(flagInfoList[nowFlagCount -1].position.x - 1.45f, flagInfoList[nowFlagCount].position.y - 1.55f), Quaternion.identity, transform);
-        var main = dustParticle.GetComponent<ParticleSystem>().main;
-        main.startColor = flagInfoList[nowFlagCount - 1].color;
     }
 }

@@ -6,14 +6,14 @@ using UnityEngine;
 public class Timer : MonoBehaviour
 {
     [SerializeField]
-    float currentTimer, maxTimer;
+    private float currentTimer, maxTimer;
     [SerializeField]
-    float plusTime, minusTime;
+    private float plusTime, minusTime;
 
     [SerializeField]
-    TextMeshProUGUI timerTxt;
+    private TextMeshProUGUI timerTxt;
 
-    Instruction instruction;
+    private Instruction instruction;
 
     private void Awake()
     {
@@ -29,20 +29,13 @@ public class Timer : MonoBehaviour
     {
         currentTimer -= Time.deltaTime;
         timerTxt.text = Mathf.FloorToInt(currentTimer).ToString();
-
-        if (Input.GetKeyDown(KeyCode.U))
-            SetTimer(true);
-        if (Input.GetKeyDown(KeyCode.D))
-            SetTimer(false);
     }
 
-    public void SetTimer(bool plus)
+    public void AddTime()
     {
-        if (plus)
-            currentTimer += instruction.questionTime + 1;
-            //currentTimer += plusTime;
-        else
-            currentTimer -= instruction.questionTime - 1;
-            //currentTimer -= minusTime;
+        Debug.Log("성공함! 시간 추가해줘");
+        currentTimer += 5;
     }
+
+    // 얘는 모든 시간 타이머임.
 }

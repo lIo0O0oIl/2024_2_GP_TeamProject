@@ -448,29 +448,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flagPrefab: {fileID: 1330875293505624549, guid: 22f35e45ba599d444b64a969ef85c816, type: 3}
-  flagList:
-  - colorName: Red
+  flagInfoList:
+  - colorNameEN: Blue
+    colorNameKR: "\uCCAD\uAE30"
+    color: {r: 0.015686275, g: 0.15294118, b: 1, a: 1}
+    position: {x: -2, y: 0}
+  - colorNameEN: White
+    colorNameKR: "\uBC31\uAE30"
+    color: {r: 1, g: 1, b: 1, a: 1}
+    position: {x: 2, y: 0}
+  - colorNameEN: Red
+    colorNameKR: "\uC801\uAE30"
     color: {r: 1, g: 0, b: 0.09411765, a: 1}
     position: {x: -6, y: 0}
-  - colorName: Yellow
+  - colorNameEN: Yellow
+    colorNameKR: "\uD669\uAE30"
     color: {r: 0.9137255, g: 0.8784314, b: 0.13725491, a: 1}
     position: {x: 6, y: 0}
-  - colorName: Black
+  - colorNameEN: Black
+    colorNameKR: "\uD751\uAE30"
     color: {r: 0, g: 0, b: 0, a: 1}
-    position: {x: -2, y: -2}
-  - colorName: Green
+    position: {x: -2, y: 2}
+  - colorNameEN: Green
+    colorNameKR: "\uB179\uAE30"
     color: {r: 0.29803923, g: 0.60784316, b: 0, a: 1}
-    position: {x: 2, y: -2}
-  - colorName: Puple
+    position: {x: 2, y: 2}
+  - colorNameEN: Purple
+    colorNameKR: "\uC790\uAE30"
     color: {r: 0.6313726, g: 0, b: 0.87058824, a: 1}
-    position: {x: -6, y: -2}
-  - colorName: Pink
+    position: {x: -6, y: 2}
+  - colorNameEN: Pink
+    colorNameKR: "\uD64D\uAE30"
     color: {r: 0.9647059, g: 0.7058824, b: 0.88235295, a: 1}
-    position: {x: 6, y: -2}
-  - colorName: Orange
+    position: {x: 6, y: 2}
+  - colorNameEN: Orange
+    colorNameKR: "\uC8FC\uAE30"
     color: {r: 1, g: 0.4509804, b: 0.07450981, a: 1}
     position: {x: -2, y: 6}
-  - colorName: Brown
+  - colorNameEN: Brown
+    colorNameKR: "\uAC08\uAE30"
     color: {r: 0.3254902, g: 0.13333334, b: 0, a: 1}
     position: {x: 2, y: 6}
   dustParticle: {fileID: 3761616568636873079, guid: ded5bacfe3791e54a94efc7b21a0f971, type: 3}
@@ -1166,25 +1182,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e80df5ca267884d47a938faadbaeb21b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  up:
-  - "\uC62C\uB9AC\uACE0"
+  firstCommandList:
   - "\uB0B4\uB9AC\uACE0"
+  - "\uC62C\uB9AC\uACE0"
   - "\uAC00\uB9CC\uD788 \uB450\uACE0"
-  down:
-  - "\uC62C\uB824"
+  secondCommandList:
   - "\uB0B4\uB824"
+  - "\uC62C\uB824"
   - "\uAC00\uB9CC\uD788 \uB46C"
-  upCommand: 
-  downCommand: 
-  upFlag: 0
-  downFlag: 0
+  movedFlagIndex: 
+  movedFlagState: 
   questionTime: 5
   currentTime: 5
   timeChangeCnt: 0
   timeCurrentCnt: 0
   currentFlagNum: 2
   currentWave: 0
-  isClear: 0
   instructionTxt: {fileID: 406544128}
   timeTxt: {fileID: 1268356000}
 --- !u!114 &2049485501

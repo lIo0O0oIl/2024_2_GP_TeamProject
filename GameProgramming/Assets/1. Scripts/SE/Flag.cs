@@ -78,17 +78,7 @@ public class Flag : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log($"{colorName}색 깃발 클릭");
         is_up = !is_up;
-
-        //float distance = Vector3.Distance(cloth.transform.localPosition, is_up ? movePos : orginPos);
-        //float duration = distance / speed;
-
-        //Vector2 nowPos = cloth.transform.localPosition;
-        //DOTween.Kill(cloth);
-        //cloth.transform.localPosition = nowPos;
-        //cloth.transform.DOLocalMove(is_up ? movePos : orginPos, duration).SetEase(Ease.Linear);
-
         FlagStateManager.Instance.GiveFlagStateToCommand();
     }
 }

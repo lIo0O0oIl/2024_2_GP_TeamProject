@@ -7,7 +7,7 @@ public class Flag : MonoBehaviour
 {
     public string colorName;
     public Color color;
-    public float speed = 3f;
+    private float speed = 3f;
 
     [SerializeField] private Vector2 orginPos;
     [SerializeField] private Vector2 movePos;
@@ -64,11 +64,11 @@ public class Flag : MonoBehaviour
     {
         if (is_up == false)
         {
-            cloth.transform.Translate(movePos * Time.deltaTime);
+            cloth.transform.Translate(movePos * speed * Time.deltaTime);
         }
         else
         {
-            cloth.transform.Translate(-movePos * Time.deltaTime);
+            cloth.transform.Translate(-movePos * speed * Time.deltaTime);
         }
 
         cloth.transform.localPosition = new Vector2

@@ -762,6 +762,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8928573466869357457, guid: 22f35e45ba599d444b64a969ef85c816, type: 3}
+      propertyPath: speed
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1116,6 +1120,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8928573466869357457, guid: 22f35e45ba599d444b64a969ef85c816, type: 3}
+      propertyPath: speed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8928573466869357457, guid: 22f35e45ba599d444b64a969ef85c816, type: 3}
       propertyPath: color.b
       value: 1
       objectReference: {fileID: 0}
@@ -1198,6 +1206,7 @@ MonoBehaviour:
   timeCurrentCnt: 0
   currentFlagNum: 2
   currentWave: 0
+  keepPercent: 15
   instructionTxt: {fileID: 406544128}
   timeTxt: {fileID: 1268356000}
 --- !u!114 &2049485501
@@ -1213,9 +1222,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTimer: 0
-  maxTimer: 60
-  plusTime: 3
-  minusTime: 5
+  maxTimer: 30
+  plusTime: 2.5
   timerTxt: {fileID: 1258750177}
 --- !u!114 &2049485502
 MonoBehaviour:

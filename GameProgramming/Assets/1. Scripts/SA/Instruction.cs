@@ -40,6 +40,7 @@ public class Instruction : MonoBehaviour
     [Header("FlagAndWave")]
     [SerializeField] int currentFlagNum;
     [SerializeField] int currentWave;
+    [SerializeField] int keepPercent;
     //[SerializeField] bool isClear;
 
     [Header("UI")]
@@ -113,6 +114,11 @@ public class Instruction : MonoBehaviour
             {
                 if (System.Convert.ToBoolean(firstCommandIndex) != FlagStateManager.Instance.GetFlag((int)firstFlagIndex).is_up) break;
             }
+            else if (firstCommandIndex == 2)
+            {
+                if (keepPercent > Random.Range(0, 100))
+                    continue;
+            }
             else break;
 
             whileBreaker++;
@@ -135,6 +141,12 @@ public class Instruction : MonoBehaviour
             else if (secondCommandIndex == 2)
             {
                 if (firstCommandIndex != 2) break;
+
+                if (secondCommandIndex == 2)
+                {
+                    if (keepPercent > Random.Range(0, 100))
+                        continue;
+                }
             }
 
             whileBreaker++;
@@ -188,7 +200,7 @@ public class Instruction : MonoBehaviour
         currentTime = questionTime;
 
         timeCurrentCnt++;
-        if (timeCurrentCnt > timeChangeCnt && questionTime >= 1f)
+        if (timeCurrentCnt > timeChangeCnt && questionTime >= 1.5f)
             questionTime -= 0.1f;
 
         EnterInstruction();

@@ -8,17 +8,10 @@ public class Timer : MonoBehaviour
     [SerializeField]
     private float currentTimer, maxTimer;
     [SerializeField]
-    private float plusTime, minusTime;
+    private float plusTime;
 
     [SerializeField]
     private TextMeshProUGUI timerTxt;
-
-    private Instruction instruction;
-
-    private void Awake()
-    {
-        instruction = GetComponent<Instruction>();
-    }
 
     private void Start()
     {
@@ -34,7 +27,7 @@ public class Timer : MonoBehaviour
     public void AddTime()
     {
         Debug.Log("성공함! 시간 추가해줘");
-        currentTimer += 5;
+        currentTimer += plusTime;
     }
 
     // 얘는 모든 시간 타이머임.

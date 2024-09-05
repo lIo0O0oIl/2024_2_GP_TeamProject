@@ -1206,6 +1206,7 @@ MonoBehaviour:
   timeCurrentCnt: 0
   currentFlagNum: 2
   currentWave: 0
+  keepPercent: 15
   instructionTxt: {fileID: 406544128}
   timeTxt: {fileID: 1268356000}
 --- !u!114 &2049485501
@@ -1221,9 +1222,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTimer: 0
-  maxTimer: 60
-  plusTime: 3
-  minusTime: 5
+  maxTimer: 30
+  plusTime: 2.5
   timerTxt: {fileID: 1258750177}
 --- !u!114 &2049485502
 MonoBehaviour:

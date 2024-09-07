@@ -94,7 +94,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorName: White
   color: {r: 1, g: 1, b: 1, a: 1}
-  speed: 2
   orginPos: {x: 0, y: 0}
   movePos: {x: -0.4, y: -1.4}
   is_up: 1

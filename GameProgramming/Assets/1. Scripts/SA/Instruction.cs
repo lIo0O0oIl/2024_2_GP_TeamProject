@@ -53,7 +53,7 @@ public class Instruction : MonoBehaviour
 
     [Header("Score")]
     [SerializeField] private TMP_Text scoreTxt;
-    private int score = 0;
+    public int score = 0;
 
 
     private Timer timer;
@@ -269,4 +269,6 @@ public class Instruction : MonoBehaviour
         // 헥사 코드로 변환 (RRGGBB 형식)
         return string.Format("#{0:X2}{1:X2}{2:X2}", r, g, b);
     }
+
+
 }

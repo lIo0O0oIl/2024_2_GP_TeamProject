@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,15 +14,34 @@ public class Timer : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI timerTxt;
 
+    Instruction instruction;
+
     private void Start()
     {
         currentTimer = maxTimer;
+
+        instruction = GetComponent<Instruction>();
     }
 
     private void Update()
     {
         currentTimer -= Time.deltaTime;
         timerTxt.text = Mathf.FloorToInt(currentTimer).ToString();
+
+        Gameover();
+    }
+
+    public void Gameover()
+    {
+        if(currentTimer < 0)
+        {
+            Time.timeScale = 0;
+
+            BackendRank.Instance.RankInsert(instruction.score);
+            BackendRank.Instance.RankGet();
+
+            Debug.Log("Gameover");
+        }
     }
 
     public void AddTime()

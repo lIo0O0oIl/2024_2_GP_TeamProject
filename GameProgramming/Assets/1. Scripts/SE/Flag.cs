@@ -45,6 +45,11 @@ public class Flag : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        Init(colorName, color, transform.position.y);
+    }
+
     public void Init(string colorName, Color color, float yPos)
     {
         this.colorName = colorName;

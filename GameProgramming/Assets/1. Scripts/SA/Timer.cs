@@ -8,7 +8,7 @@ public class Timer : MonoBehaviour
     [SerializeField]
     private float currentTimer, maxTimer;
     [SerializeField]
-    private float plusTime;
+    private float plusTime, minusTime = 3;
 
     [SerializeField]
     private TextMeshProUGUI timerTxt;
@@ -27,7 +27,15 @@ public class Timer : MonoBehaviour
     public void AddTime()
     {
         Debug.Log("성공함! 시간 추가해줘");
+        SoundManager.Instance.PlaySFX("Clear");
         currentTimer += plusTime;
+    }
+
+    public void SubtractTime()
+    {
+        Debug.Log("실패함! 시간 빼줘");
+        SoundManager.Instance.PlaySFX("Fail");
+        currentTimer += minusTime;
     }
 
     // 얘는 모든 시간 타이머임.

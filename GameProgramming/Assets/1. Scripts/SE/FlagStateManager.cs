@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -9,6 +10,8 @@ public class FlagStateManager : MonoBehaviour
     public static FlagStateManager Instance;
 
     public List<Flag> flags = new List<Flag>();
+
+    public List<EventFlag> eventFlag = new List<EventFlag>();
 
     private void Awake()
     {

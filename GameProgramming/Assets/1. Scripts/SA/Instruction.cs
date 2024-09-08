@@ -39,7 +39,12 @@ public class Instruction : MonoBehaviour
     [SerializeField] int timeCurrentCnt;
 
     [Header("FlagAndWave")]
+<<<<<<< Updated upstream
     [SerializeField] [Range(0, 10)] private float twoCommandRange = 7;
+=======
+    [SerializeField][Range(0, 10)] private float twoCommandRange = 7;
+    [SerializeField][Range(0, 10)] private float eventFlagRange = 3;
+>>>>>>> Stashed changes
     private bool twoCommand = false;
     private bool oneFlagCheck = false;
     [SerializeField] int currentFlagNum;
@@ -97,6 +102,12 @@ public class Instruction : MonoBehaviour
 
     private void EnterInstruction()
     {
+        if (Random.Range(0, 10) < eventFlagRange)
+        {
+            ShowEventFlagCommand();
+            return;
+        }
+
         if (Random.Range(0, 10) < twoCommandRange)
         {
             twoCommand = true;
@@ -217,6 +228,20 @@ public class Instruction : MonoBehaviour
         currentWave++;
     }
 
+    private void ShowEventFlagCommand()
+    {
+        FlagStateManager.Instance.eventFlag[Random.Range(0, FlagStateManager.Instance.eventFlag.Count)].ShowEventFlag();
+
+        instructionTxt.text = $"{FlagStateManager.Instance.eventFlag[Random.Range(0, FlagStateManager.Instance.eventFlag.Count)].flagNameKR} 누르기!";
+
+        if (currentWave % 2 == 0 && currentWave != 0)       // 두 턴마다 깃발 생성하기
+        {
+            currentFlagNum++;
+            flagSpawner.SpawnFlag();
+        }
+        currentWave++;
+    }
+
     private void RemoveInstruction()
     {
         instructionTxt.text = "";
@@ -253,6 +278,14 @@ public class Instruction : MonoBehaviour
             }
             stateCnt++;
         }
+        score += 1;
+        scoreTxt.text = score.ToString();
+        timer.AddTime();
+        RemoveInstruction();
+    }
+
+    public void EventFlagCheck()
+    {
         score += 1;
         scoreTxt.text = score.ToString();
         timer.AddTime();

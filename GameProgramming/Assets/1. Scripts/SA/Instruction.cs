@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public enum FLAG
 {
@@ -38,6 +39,9 @@ public class Instruction : MonoBehaviour
     [SerializeField] int timeCurrentCnt;
 
     [Header("FlagAndWave")]
+    [SerializeField] [Range(0, 10)] private float twoCommandRange = 7;
+    private bool twoCommand = false;
+    private bool oneFlagCheck = false;
     [SerializeField] int currentFlagNum;
     [SerializeField] int currentWave;
     [SerializeField] int keepPercent;
@@ -46,6 +50,11 @@ public class Instruction : MonoBehaviour
     [Header("UI")]
     [SerializeField] TextMeshProUGUI instructionTxt;
     [SerializeField] TextMeshProUGUI timeTxt;
+
+    [Header("Score")]
+    [SerializeField] private TMP_Text scoreTxt;
+    private int score = 0;
+
 
     private Timer timer;
     private FlagSpawner flagSpawner;
@@ -88,22 +97,30 @@ public class Instruction : MonoBehaviour
 
     private void EnterInstruction()
     {
+        if (Random.Range(0, 10) < twoCommandRange)
+        {
+            twoCommand = true;
+        }
+
         #region 깃발 선택
-        FLAG firstFlagIndex, secondFlagIndex;
+        FLAG firstFlagIndex, secondFlagIndex = FLAG.Blue;
         // 첫번째 깃발
         do firstFlagIndex = (FLAG)Random.Range(0, (int)FLAG.COUNT);
         while ((int)firstFlagIndex > currentFlagNum);
-
-        // 두번째 깃발 (첫번째 것과 동일하지 않아야 함.)
-        do secondFlagIndex = (FLAG)Random.Range(0, (int)FLAG.COUNT);
-        while (firstFlagIndex == secondFlagIndex || (int)secondFlagIndex > currentFlagNum);
-
         movedFlagIndex.Add((int)firstFlagIndex);
-        movedFlagIndex.Add((int)secondFlagIndex);
+
+        if (twoCommand)
+        {
+            // 두번째 깃발 (첫번째 것과 동일하지 않아야 함.)
+            do secondFlagIndex = (FLAG)Random.Range(0, (int)FLAG.COUNT);
+            while (firstFlagIndex == secondFlagIndex || (int)secondFlagIndex > currentFlagNum);
+            movedFlagIndex.Add((int)secondFlagIndex);
+        }
+
         #endregion
 
         #region 명령 선택
-        int firstCommandIndex, secondCommandIndex;
+        int firstCommandIndex = 0, secondCommandIndex = 0;
         List<bool> flagState = FlagStateManager.Instance.GetFlagState();
         
         // 첫번째 명령 (0, 1 일 때 현재와 달라야 함.)
@@ -116,10 +133,10 @@ public class Instruction : MonoBehaviour
             }
             else if (firstCommandIndex == 2)
             {
-                if (keepPercent > Random.Range(0, 100))
-                    continue;
+                if (twoCommand == false) continue;
+                if (keepPercent > Random.Range(0, 100)) continue;
             }
-            else break;
+            //else break;
 
             whileBreaker++;
             if (whileBreaker > 1000)
@@ -130,31 +147,34 @@ public class Instruction : MonoBehaviour
             }
         }
 
-        // 두번째 명령 (현재꺼랑 다르고 위에꺼랑 가만히 두고가 겹치면 안됨.)
-        while (true)
+        if (twoCommand)
         {
-            secondCommandIndex = Random.Range(0, secondCommandList.Length);
-            if (secondCommandIndex != 2)
+            // 두번째 명령 (현재꺼랑 다르고 위에꺼랑 가만히 두고가 겹치면 안됨.)
+            while (true)
             {
-                if (System.Convert.ToBoolean(secondCommandIndex) != FlagStateManager.Instance.GetFlag((int)secondFlagIndex).is_up) break;
-            }
-            else if (secondCommandIndex == 2)
-            {
-                if (firstCommandIndex != 2) break;
-
-                if (secondCommandIndex == 2)
+                secondCommandIndex = Random.Range(0, secondCommandList.Length);
+                if (secondCommandIndex != 2)
                 {
-                    if (keepPercent > Random.Range(0, 100))
-                        continue;
+                    if (System.Convert.ToBoolean(secondCommandIndex) != FlagStateManager.Instance.GetFlag((int)secondFlagIndex).is_up) break;
                 }
-            }
+                else if (secondCommandIndex == 2)
+                {
+                    if (firstCommandIndex != 2) break;
 
-            whileBreaker++;
-            if (whileBreaker > 1000)
-            {
-                whileBreaker = 0;
-                Debug.Log("와일문 잘못만듦");
-                break;
+                    if (secondCommandIndex == 2)
+                    {
+                        if (keepPercent > Random.Range(0, 100))
+                            continue;
+                    }
+                }
+
+                whileBreaker++;
+                if (whileBreaker > 1000)
+                {
+                    whileBreaker = 0;
+                    Debug.Log("와일문 잘못만듦");
+                    break;
+                }
             }
         }
 
@@ -178,9 +198,16 @@ public class Instruction : MonoBehaviour
             movedFlagState.Add(System.Convert.ToBoolean(secondCommandIndex));
         }
         #endregion
-        
-        instructionTxt.text = $"<color={ColorToHex(flagSpawner.flagInfoList[(int)firstFlagIndex].color)}>{firstFlagIndex}</color> {firstCommandList[firstCommandIndex]} " +
-            $"<color={ColorToHex(flagSpawner.flagInfoList[(int)secondFlagIndex].color)}>{secondFlagIndex}</color> {secondCommandList[secondCommandIndex]}";
+
+        if (twoCommand)
+        {
+            instructionTxt.text = $"<color={ColorToHex(flagSpawner.flagInfoList[(int)firstFlagIndex].color)}>{firstFlagIndex}</color> {firstCommandList[firstCommandIndex]} " +
+                $"<color={ColorToHex(flagSpawner.flagInfoList[(int)secondFlagIndex].color)}>{secondFlagIndex}</color> {secondCommandList[secondCommandIndex]}";
+        }
+        else
+        {
+            instructionTxt.text = $"<color={ColorToHex(flagSpawner.flagInfoList[(int)firstFlagIndex].color)}>{firstFlagIndex}</color> {firstCommandList[firstCommandIndex]}";
+        }
 
         if (currentWave % 2 == 0 && currentWave != 0)       // 두 턴마다 깃발 생성하기
         {
@@ -193,6 +220,7 @@ public class Instruction : MonoBehaviour
     private void RemoveInstruction()
     {
         instructionTxt.text = "";
+        oneFlagCheck = false;
 
         movedFlagIndex.Clear();
         movedFlagState.Clear();
@@ -212,13 +240,21 @@ public class Instruction : MonoBehaviour
         int stateCnt = 0;
         foreach (var index in movedFlagIndex)
         {
-            //Debug.Log(flagState[index] + " " + movedFlagState[stateCnt]);
             if (flagState[index] != movedFlagState[stateCnt])
             {
+                if (twoCommand && oneFlagCheck == false)
+                {
+                    oneFlagCheck = true;
+                    continue;
+                }
+                timer.SubtractTime();
+                RemoveInstruction();
                 return;
             }
             stateCnt++;
         }
+        score += 1;
+        scoreTxt.text = score.ToString();
         timer.AddTime();
         RemoveInstruction();
     }

@@ -10,13 +10,20 @@ public class Sound
 
 public class SoundManager : MonoBehaviour
 {
-    public Sound[] bgmSounds;           // BGM »ç¿îµå ÀúÀå
-    public Sound[] effectSounds;        // SFX »ç¿îµå ÀúÀå
+    public static SoundManager Instance;
 
-    public AudioSource audioSourceBgmPlayers;           // BGMÀ» Ãâ·ÂÇÒ ¿Àµð¿À ¼Ò½º
-    public AudioSource audioSourceEffectsPlayers;     // SFX¸¦ Ãâ·ÂÇÒ ¿Àµð¿À ¼Ò½º
+    public Sound[] bgmSounds;           // BGM ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public Sound[] effectSounds;        // SFX ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    public void PlayBGM(string name) // BGM ½ÇÇà
+    public AudioSource audioSourceBgmPlayers;           // BGMï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò½ï¿½
+    public AudioSource audioSourceEffectsPlayers;     // SFXï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ò½ï¿½
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    public void PlayBGM(string name) // BGM ï¿½ï¿½ï¿½ï¿½
     {
         for (int i = 0; i < bgmSounds.Length; i++)
         {

@@ -39,8 +39,8 @@ public class CameraMove : MonoBehaviour
 
     private void MoveCamera()
     {
-        float moveX = Input.GetAxisRaw("Horizontal") * speed * Time.deltaTime;
-        float moveY = Input.GetAxisRaw("Vertical") * speed * Time.deltaTime;
+        float moveX = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
+        float moveY = Input.GetAxis("Vertical") * speed * Time.deltaTime;
 
         mainCamera.transform.Translate(new Vector3(moveX, moveY, 0f));
     }

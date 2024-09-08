@@ -79,6 +79,7 @@ public class Flag : MonoBehaviour
     private void OnMouseDown()
     {
         is_up = !is_up;
+        SoundManager.Instance.PlaySFX("Flag");
         FlagStateManager.Instance.GiveFlagStateToCommand();
     }
 }

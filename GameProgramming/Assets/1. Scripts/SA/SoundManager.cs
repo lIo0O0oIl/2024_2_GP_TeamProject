@@ -23,6 +23,11 @@ public class SoundManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        PlayBGM("BGM");
+    }
+
     public void PlayBGM(string name) // BGM ����
     {
         for (int i = 0; i < bgmSounds.Length; i++)

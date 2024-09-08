@@ -15,6 +15,7 @@ public class EventFlag : MonoBehaviour
 
     public void ShowEventFlag()
     {
+        StopCoroutine(UseEventFlag());
         gameObject.SetActive(true);
     }
 
@@ -27,7 +28,7 @@ public class EventFlag : MonoBehaviour
 
     private IEnumerator UseEventFlag()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.5f);
         gameObject.SetActive(false);
         spriteRenderer.sprite = baseSprite;
     }

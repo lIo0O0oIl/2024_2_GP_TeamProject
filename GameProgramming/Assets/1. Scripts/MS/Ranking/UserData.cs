@@ -42,7 +42,10 @@ public class BackendGameData
 
     private string gameDataRowInDate = string.Empty;
 
-
+    public void Gaemover(float socre)
+    {
+        userData.score = socre;
+    }
 
     public void GameDataInsert()
     {

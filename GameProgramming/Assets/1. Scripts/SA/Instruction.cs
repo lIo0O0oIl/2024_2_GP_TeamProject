@@ -5,16 +5,16 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public enum FLAG
 {
-    Blue      = 0,
-    White    = 1,
-    Red       = 2,
-    Yellow   = 3,
-    Black     = 4,
-    Green   = 5,
-    Purple   = 6,
-    Pink      = 7,
+    Blue = 0,
+    White = 1,
+    Red = 2,
+    Yellow = 3,
+    Black = 4,
+    Green = 5,
+    Purple = 6,
+    Pink = 7,
     Orange = 8,
-    Brown   = 9,
+    Brown = 9,
     COUNT
 }                           // 나중에 딕셔너리 쓰거나 배열사용해서 색깔들 표시하게 해주기.
 
@@ -39,12 +39,8 @@ public class Instruction : MonoBehaviour
     [SerializeField] int timeCurrentCnt;
 
     [Header("FlagAndWave")]
-<<<<<<< Updated upstream
-    [SerializeField] [Range(0, 10)] private float twoCommandRange = 7;
-=======
     [SerializeField][Range(0, 10)] private float twoCommandRange = 7;
     [SerializeField][Range(0, 10)] private float eventFlagRange = 3;
->>>>>>> Stashed changes
     private bool twoCommand = false;
     private bool oneFlagCheck = false;
     [SerializeField] int currentFlagNum;
@@ -58,7 +54,7 @@ public class Instruction : MonoBehaviour
 
     [Header("Score")]
     [SerializeField] private TMP_Text scoreTxt;
-    private int score = 0;
+    public int score = 0;
 
 
     private Timer timer;
@@ -111,73 +107,50 @@ public class Instruction : MonoBehaviour
         if (Random.Range(0, 10) < twoCommandRange)
         {
             twoCommand = true;
+            Debug.Log("두 개 명령어");
+        }
+        else
+        {
+            twoCommand = false;
+            Debug.Log("한 개 명령어");
         }
 
         #region 깃발 선택
-        FLAG firstFlagIndex, secondFlagIndex = FLAG.Blue;
-        // 첫번째 깃발
-        do firstFlagIndex = (FLAG)Random.Range(0, (int)FLAG.COUNT);
-        while ((int)firstFlagIndex > currentFlagNum);
-        movedFlagIndex.Add((int)firstFlagIndex);
-
+        FLAG firstFlagIndex = FLAG.Blue, secondFlagIndex = FLAG.Blue;
         if (twoCommand)
         {
-            // 두번째 깃발 (첫번째 것과 동일하지 않아야 함.)
-            do secondFlagIndex = (FLAG)Random.Range(0, (int)FLAG.COUNT);
-            while (firstFlagIndex == secondFlagIndex || (int)secondFlagIndex > currentFlagNum);
-            movedFlagIndex.Add((int)secondFlagIndex);
+            // 첫번째 깃발
+            do firstFlagIndex = (FLAG)Random.Range(0, (int)FLAG.COUNT);
+            while ((int)firstFlagIndex > currentFlagNum);
+            movedFlagIndex.Add((int)firstFlagIndex);
         }
+
+        // 두번째 깃발 (첫번째 것과 동일하지 않아야 함.)
+        do secondFlagIndex = (FLAG)Random.Range(0, (int)FLAG.COUNT);
+        while (firstFlagIndex == secondFlagIndex || (int)secondFlagIndex > currentFlagNum);
+        movedFlagIndex.Add((int)secondFlagIndex);
 
         #endregion
 
         #region 명령 선택
         int firstCommandIndex = 0, secondCommandIndex = 0;
         List<bool> flagState = FlagStateManager.Instance.GetFlagState();
-        
+
         // 첫번째 명령 (0, 1 일 때 현재와 달라야 함.)
-        while (true)
-        {
-            firstCommandIndex = Random.Range(0, firstCommandList.Length);
-            if (firstCommandIndex != 2)
-            {
-                if (System.Convert.ToBoolean(firstCommandIndex) != FlagStateManager.Instance.GetFlag((int)firstFlagIndex).is_up) break;
-            }
-            else if (firstCommandIndex == 2)
-            {
-                if (twoCommand == false) continue;
-                if (keepPercent > Random.Range(0, 100)) continue;
-            }
-            //else break;
-
-            whileBreaker++;
-            if (whileBreaker > 1000)
-            {
-                whileBreaker = 0;
-                Debug.Log("와일문 잘못만듦");
-                break;
-            }
-        }
-
         if (twoCommand)
         {
-            // 두번째 명령 (현재꺼랑 다르고 위에꺼랑 가만히 두고가 겹치면 안됨.)
             while (true)
             {
-                secondCommandIndex = Random.Range(0, secondCommandList.Length);
-                if (secondCommandIndex != 2)
+                firstCommandIndex = Random.Range(0, firstCommandList.Length);
+                if (firstCommandIndex != 2)
                 {
-                    if (System.Convert.ToBoolean(secondCommandIndex) != FlagStateManager.Instance.GetFlag((int)secondFlagIndex).is_up) break;
+                    if (System.Convert.ToBoolean(firstCommandIndex) != FlagStateManager.Instance.GetFlag((int)firstFlagIndex).is_up) break;
                 }
-                else if (secondCommandIndex == 2)
+                else if (firstCommandIndex == 2)
                 {
-                    if (firstCommandIndex != 2) break;
-
-                    if (secondCommandIndex == 2)
-                    {
-                        if (keepPercent > Random.Range(0, 100))
-                            continue;
-                    }
+                    if (keepPercent > Random.Range(0, 100)) continue;
                 }
+                //else break;
 
                 whileBreaker++;
                 if (whileBreaker > 1000)
@@ -186,6 +159,36 @@ public class Instruction : MonoBehaviour
                     Debug.Log("와일문 잘못만듦");
                     break;
                 }
+            }
+        }
+
+        // 두번째 명령 (현재꺼랑 다르고 위에꺼랑 가만히 두고가 겹치면 안됨.)
+        while (true)
+        {
+            secondCommandIndex = Random.Range(0, secondCommandList.Length);
+            if (secondCommandIndex != 2)
+            {
+                if (System.Convert.ToBoolean(secondCommandIndex) != FlagStateManager.Instance.GetFlag((int)secondFlagIndex).is_up) break;
+            }
+            else if (secondCommandIndex == 2)
+            {
+                if (twoCommand == false) continue;
+                
+                if (firstCommandIndex != 2) break;
+
+                if (secondCommandIndex == 2)
+                {
+                    if (keepPercent > Random.Range(0, 100))
+                        continue;
+                }
+            }
+
+            whileBreaker++;
+            if (whileBreaker > 1000)
+            {
+                whileBreaker = 0;
+                Debug.Log("와일문 잘못만듦");
+                break;
             }
         }
 
@@ -217,7 +220,7 @@ public class Instruction : MonoBehaviour
         }
         else
         {
-            instructionTxt.text = $"<color={ColorToHex(flagSpawner.flagInfoList[(int)firstFlagIndex].color)}>{firstFlagIndex}</color> {firstCommandList[firstCommandIndex]}";
+            instructionTxt.text = $"<color={ColorToHex(flagSpawner.flagInfoList[(int)secondFlagIndex].color)}>{secondFlagIndex}</color> {secondCommandList[secondCommandIndex]}";
         }
 
         if (currentWave % 2 == 0 && currentWave != 0)       // 두 턴마다 깃발 생성하기

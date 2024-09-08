@@ -31,19 +31,19 @@ public class Data : MonoBehaviour
     void Start()
     {
         userName = inputField.GetComponent<TMP_InputField>().text;
-
-        inputField.onSubmit.AddListener((inputField) => { NickName(); });
     }
 
     public void NickName()
     {
-
         userName = inputField.text;
-        Debug.Log("´Ð ³×ÀÓ" + userName);
 
         PlayerPrefs.SetString("userName", userName);
 
+        BackendLogin.Instance.UpdateNickname(userName);
+
         Debug.Log(userName);
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
     }
 
     public float BestSocre(float score)

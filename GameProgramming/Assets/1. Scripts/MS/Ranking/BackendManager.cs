@@ -28,7 +28,6 @@ public class BackendManager : MonoBehaviour
     }
 
 
-
     private IEnumerator SignUpAndLoginCoroutine()
     {
         num = Random.Range(0, 9999);

@@ -43,7 +43,7 @@ public class Data : MonoBehaviour
 
         Debug.Log(userName);
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Intro");
     }
 
     public float BestSocre(float score)

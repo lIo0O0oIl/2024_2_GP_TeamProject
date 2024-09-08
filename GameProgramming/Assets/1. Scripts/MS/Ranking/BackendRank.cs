@@ -83,7 +83,7 @@ public class BackendRank
         Debug.Log("랭킹 삽입에 성공했습니다. : " + rankBro);
     }
 
-    public void RankGet()
+    public void RankGet(TextMeshProUGUI _1st, TextMeshProUGUI _2st, TextMeshProUGUI _3st, TextMeshProUGUI _1stS, TextMeshProUGUI _2stS, TextMeshProUGUI _3stS, TextMeshProUGUI _MyR, TextMeshProUGUI _MyRS)
     {
         string rankUUID = "60d1f100-6b4d-11ef-808f-7be0f20936a0";
         var bro = Backend.URank.User.GetRankList(rankUUID);
@@ -93,18 +93,50 @@ public class BackendRank
             Debug.LogError("랭킹 조회중 오류가 발생했습니다. : " + bro);
             return;
         }
-
         Debug.Log("랭킹 조회에 성공했습니다. : " + bro);
 
-        Debug.Log("총 랭킹 등록 유저 수 : " + bro.GetFlattenJSON()["totalCount"].ToString());
 
-        foreach (LitJson.JsonData jsonData in bro.FlattenRows())
+        for (int i = 0; i < bro.FlattenRows().Count; i++)
         {
-            StringBuilder info = new StringBuilder();
+            LitJson.JsonData jsonData = bro.FlattenRows()[i];
 
-            info.AppendLine("점수 : " + jsonData["score"].ToString());
-            info.AppendLine();
-            Debug.Log(info);
+            // "nickname" 키가 존재하는지 확인
+            if (jsonData.ContainsKey("nickname"))
+            {
+                StringBuilder info = new StringBuilder();
+                StringBuilder info_s = new StringBuilder();
+
+                info.AppendLine($"{jsonData["rank"]}    #{jsonData["nickname"]}");
+                info_s.AppendLine($"{(int)jsonData["score"]} 점");
+
+                if (i == 0)
+                {
+                    _1st.text = info.ToString();
+                    _1stS.text = info_s.ToString();
+                }
+                else if (i == 1)
+                {
+                    _2st.text = info.ToString();
+                    _2stS.text = info_s.ToString();
+                }
+                else if (i == 2)
+                {
+                    _3st.text = info.ToString();
+                    _3stS.text = info_s.ToString();
+                }
+
+                // 사용자 랭킹 업데이트
+                if (jsonData["nickname"].ToString() == Data.Instance.LoadData())
+                {
+                    _MyR.text = info.ToString();
+                    _MyRS.text = info_s.ToString();
+                }
+            }
+            else
+            {
+                Debug.LogError($"랭킹 {i}에 'nickname' 데이터가 없습니다.");
+            }
         }
+
     }
 }

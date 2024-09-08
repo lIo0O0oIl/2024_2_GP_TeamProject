@@ -14,13 +14,12 @@ public class Timer : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI timerTxt;
 
-    Instruction instruction;
+    [SerializeField]
+    private GameObject gameover;
 
     private void Start()
     {
         currentTimer = maxTimer;
-
-        instruction = GetComponent<Instruction>();
     }
 
     private void Update()
@@ -35,10 +34,8 @@ public class Timer : MonoBehaviour
     {
         if(currentTimer < 0)
         {
-            Time.timeScale = 0;
-
-            BackendRank.Instance.RankInsert(instruction.score);
-            BackendRank.Instance.RankGet();
+            BackendRank.Instance.RankInsert(Instruction.Instance.score);
+            gameover.SetActive(true);
 
             Debug.Log("Gameover");
         }
@@ -55,7 +52,7 @@ public class Timer : MonoBehaviour
     {
         Debug.Log("실패함! 시간 빼줘");
         SoundManager.Instance.PlaySFX("Fail");
-        currentTimer += minusTime;
+        currentTimer -= minusTime;
     }
 
     // 얘는 모든 시간 타이머임.

@@ -81,6 +81,10 @@ public class Instruction : MonoBehaviour
     private void Start()
     {
         currentTime = questionTime;
+
+        flagSpawner.SpawnFlag();
+        flagSpawner.SpawnFlag();
+
         EnterInstruction();
     }
 
@@ -95,10 +99,12 @@ public class Instruction : MonoBehaviour
             RemoveInstruction();
         }
 
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Q))
         {
             Time.timeScale = Time.timeScale == 1 ? 0 : 1;
         }
+#endif
     }
 
     private void EnterInstruction()

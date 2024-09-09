@@ -25,7 +25,7 @@ public class FlagSpawner : MonoBehaviour
     [SerializeField] public FlagInfo[] flagInfoList;
     [SerializeField] private GameObject dustParticle;
     
-    private int nowFlagCount = 2;
+    private int nowFlagCount = 0;
     private int maxFlagCount;
 
     private void Start()

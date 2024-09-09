@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EventFlag : MonoBehaviour
 {
-    private SpriteRenderer spriteRenderer;
-    [SerializeField] private Sprite baseSprite, changeSprite;
+    public SpriteRenderer spriteRenderer;
+    [SerializeField] public Sprite baseSprite, changeSprite;
     public string flagNameKR;
 
     private void Awake()
@@ -26,7 +26,7 @@ public class EventFlag : MonoBehaviour
         Instruction.Instance.EventFlagCheck();
     }
 
-    private IEnumerator UseEventFlag()
+    public IEnumerator UseEventFlag()
     {
         yield return new WaitForSeconds(0.5f);
         gameObject.SetActive(false);

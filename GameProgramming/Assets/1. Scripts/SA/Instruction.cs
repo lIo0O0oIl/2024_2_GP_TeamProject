@@ -117,6 +117,7 @@ public class Instruction : MonoBehaviour
                 beforeEventFlag = true;
                 return;
             }
+            beforeEventFlag = false;
         }
         else
         {
@@ -158,7 +159,6 @@ public class Instruction : MonoBehaviour
                     if (System.Convert.ToBoolean(firstCommandIndex) == FlagStateManager.Instance.GetFlag((int)firstFlagIndex).is_up)
                     {
                         is_nowFlagStateCommand = true;
-                        Debug.Log("첫번째꺼 깃발 상태 같음.");
                     }
                      break;
                 }
@@ -233,14 +233,14 @@ public class Instruction : MonoBehaviour
         }
         #endregion
 
-        if (twoCommand)
+        if (twoCommand) 
         {
-            instructionTxt.text = $"<color={ColorToHex(flagSpawner.flagInfoList[(int)firstFlagIndex].color)}>{firstFlagIndex}</color> {firstCommandList[firstCommandIndex]} " +
-                $"<color={ColorToHex(flagSpawner.flagInfoList[(int)secondFlagIndex].color)}>{secondFlagIndex}</color> {secondCommandList[secondCommandIndex]}";
+            instructionTxt.text = $"<color={ColorToHex(flagSpawner.flagInfoList[(int)firstFlagIndex].color)}>{FlagSpawner.Instance.flagInfoList[(int)firstFlagIndex].colorNameKR}</color> {firstCommandList[firstCommandIndex]} " +
+                $"<color={ColorToHex(flagSpawner.flagInfoList[(int)secondFlagIndex].color)}>{FlagSpawner.Instance.flagInfoList[(int)secondFlagIndex].colorNameKR}</color> {secondCommandList[secondCommandIndex]}";
         }
         else
         {
-            instructionTxt.text = $"<color={ColorToHex(flagSpawner.flagInfoList[(int)secondFlagIndex].color)}>{secondFlagIndex}</color> {secondCommandList[secondCommandIndex]}";
+            instructionTxt.text = $"<color={ColorToHex(flagSpawner.flagInfoList[(int)secondFlagIndex].color)}>{FlagSpawner.Instance.flagInfoList[(int)secondFlagIndex].colorNameKR}</color> {secondCommandList[secondCommandIndex]}";
         }
 
         if (currentWave % 2 == 0 && currentWave != 0)       // 두 턴마다 깃발 생성하기
@@ -268,6 +268,11 @@ public class Instruction : MonoBehaviour
 
     private void RemoveInstruction()
     {
+        if (beforeEventFlag)
+        {
+            FlagStateManager.Instance.EventFlagDontShow();
+        }
+
         instructionTxt.text = "";
         oneFlagCheck = false;
         is_stay = false;
@@ -278,6 +283,7 @@ public class Instruction : MonoBehaviour
 
         currentTime = questionTime;
 
+        whileBreaker = 0;
         timeCurrentCnt++;
         if (timeCurrentCnt > timeChangeCnt && questionTime >= 1.5f)
             questionTime -= 0.05f;
@@ -287,6 +293,14 @@ public class Instruction : MonoBehaviour
 
     public void CheckCommand(List<bool> flagState)
     {
+        if (beforeEventFlag)
+        {
+            timer.SubtractTime();
+            FlagStateManager.Instance.EventFlagDontShow();
+            RemoveInstruction();
+            return;
+        }
+
         // Moved Flag State 는 따로 계산하기
         int stateCnt = 0;
         if (twoCommand == false)
@@ -302,13 +316,16 @@ public class Instruction : MonoBehaviour
                 {
                     timer.SubtractTime();
                     RemoveInstruction();
+                Debug.Log("가만히 있기가 있었음");
                     return;
                 }
                 if (twoCommand && oneFlagCheck == false)
                 {
                     oneFlagCheck = true;
+                Debug.Log("2개짜리 명령이라 하나는 무시");
                     return;
                 }
+                Debug.Log("그냥 틀림");
                 timer.SubtractTime();
                 RemoveInstruction();
                 return;
@@ -323,7 +340,6 @@ public class Instruction : MonoBehaviour
 
     public void EventFlagCheck()
     {
-        Debug.Log("이벤트 체크");
         score += 1;
         scoreTxt.text = score.ToString();
         timer.AddTime();

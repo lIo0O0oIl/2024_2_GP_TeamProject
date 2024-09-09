@@ -21,12 +21,19 @@ public struct FakeFlagInfo          // 나중에 다른 애들 있으면 사용�
 
 public class FlagSpawner : MonoBehaviour
 {
+    public static FlagSpawner Instance;
+
     [SerializeField] private GameObject flagPrefab;
     [SerializeField] public FlagInfo[] flagInfoList;
     [SerializeField] private GameObject dustParticle;
     
     private int nowFlagCount = 0;
     private int maxFlagCount;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {

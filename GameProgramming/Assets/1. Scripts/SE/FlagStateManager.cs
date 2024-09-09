@@ -66,4 +66,14 @@ public class FlagStateManager : MonoBehaviour
         flags[2].transform.DOLocalMoveY(-2, 0.75f);
         flags[3].transform.DOLocalMoveY(-2, 0.75f);
     }
+
+    public void EventFlagDontShow()
+    {
+        foreach (EventFlag flag in eventFlag)
+        {
+            flag.StopCoroutine(flag.UseEventFlag());
+            flag.spriteRenderer.sprite = flag.baseSprite;
+            flag.gameObject.SetActive(false);
+        }
+    }
 }

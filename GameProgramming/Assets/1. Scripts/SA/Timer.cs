@@ -35,6 +35,8 @@ public class Timer : MonoBehaviour
         if(currentTimer < 0)
         {
             BackendRank.Instance.RankInsert(Instruction.Instance.score);
+            Instruction.Instance.gameObject.SetActive(false);
+
             gameover.SetActive(true);
 
             Debug.Log("Gameover");
@@ -43,14 +45,12 @@ public class Timer : MonoBehaviour
 
     public void AddTime()
     {
-        Debug.Log("성공함! 시간 추가해줘");
         SoundManager.Instance.PlaySFX("Clear");
         currentTimer += plusTime;
     }
 
     public void SubtractTime()
     {
-        Debug.Log("실패함! 시간 빼줘");
         SoundManager.Instance.PlaySFX("Fail");
         currentTimer -= minusTime;
     }
